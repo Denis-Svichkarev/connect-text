@@ -44,10 +44,40 @@ class ViewController: NSViewController {
         var finalString: String = ""
 
         for i in 0..<leftLines.count {
-            finalString.append(leftLines[i] + "/" + rightLines[i] + "\n")
+            if i == leftLines.count - 1 {
+                finalString.append(leftLines[i] + "/" + rightLines[i])
+            } else {
+                finalString.append(leftLines[i] + "/" + rightLines[i] + "\n")
+            }
         }
 
         resultTextView.string = finalString
+    }
+    
+    @IBAction func onDeleteRightButtonPressed(_ sender: Any) {
+        let leftText = leftTextView.string
+        let leftLines = leftText.split(separator: "\n")
+        
+        leftTextView.string = ""
+        var finalString: String = ""
+        
+        for i in 0..<leftLines.count {
+            let delimiter = "/"
+            var token = leftLines[i].components(separatedBy: delimiter)
+            if i == leftLines.count - 1 {
+                finalString.append(token[0])
+            } else {
+                finalString.append(token[0] + "\n")
+            }
+        }
+        
+        leftTextView.string = finalString
+    }
+    
+    @IBAction func onLeftCopyButtonPressed(_ sender: Any) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+        pasteboard.setString(leftTextView.string, forType: NSPasteboard.PasteboardType.string)
     }
     
     @IBAction func onCopyButtonPressed(_ sender: Any) {
